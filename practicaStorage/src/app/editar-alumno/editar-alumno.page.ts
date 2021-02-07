@@ -60,7 +60,7 @@ export class EditarAlumnoPage implements OnInit {
       ])),
       postalCode: new FormControl(this.alumno.postalCode, Validators.compose([
         Validators.required,
-        Validators.pattern('^[1-9]{5}$'),
+        Validators.pattern('^[0-9]{5}$'),
       ]))
     });
   }
