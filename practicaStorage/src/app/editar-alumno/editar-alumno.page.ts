@@ -12,61 +12,65 @@ export class EditarAlumnoPage implements OnInit {
 
   // Data passed in by componentProps
   @Input() alumnoJson;
-  alumno:Alumno;
+  alumno: Alumno;
   validations_form: FormGroup;
 
-  constructor( public formBuilder: FormBuilder,
-        public modalCtrl: ModalController) { }
+  constructor(public formBuilder: FormBuilder,
+    public modalCtrl: ModalController) { }
 
   ngOnInit() {
-    this.alumno=JSON.parse(this.alumnoJson);
+    this.alumno = JSON.parse(this.alumnoJson);
     this.validations_form = this.formBuilder.group({
       id: new FormControl(this.alumno.id),
       first_name: new FormControl(this.alumno.first_name, Validators.compose([
-      Validators.maxLength(50),
-      Validators.minLength(1),
-      Validators.pattern('^[a-z A-Z]+$'),
-      Validators.required
+        Validators.maxLength(50),
+        Validators.minLength(1),
+        Validators.pattern('^[a-z A-Z]+$'),
+        Validators.required
       ])),
       last_name: new FormControl(this.alumno.last_name, Validators.compose([
         Validators.maxLength(50),
         Validators.minLength(1),
         Validators.pattern('^[a-z A-Z]+$'),
         Validators.required
-        ])),
+      ])),
       email: new FormControl(this.alumno.email, Validators.compose([
         Validators.pattern('^[a-zA-Z0-9_.+-]+[@]{1}[a-zA-Z0-9-]+[.]{1}[a-zA-Z]+$'),
         Validators.required
-        ])),
-    address: new FormControl(this.alumno.address, Validators.compose([
-       Validators.maxLength(50),
-       Validators.minLength(1),
-       Validators.pattern('^[a-z A-Z0-9]+$'),
-       Validators.required
-        ])),
+      ])),
+      address: new FormControl(this.alumno.address, Validators.compose([
+        Validators.maxLength(50),
+        Validators.minLength(1),
+        Validators.pattern('^[a-z A-Z0-9]+$'),
+        Validators.required
+      ])),
       city: new FormControl(this.alumno.city, Validators.compose([
         Validators.maxLength(50),
         Validators.minLength(1),
         Validators.pattern('^[a-z A-Z]+$'),
         Validators.required
-        ])),
+      ])),
       avatar: new FormControl(this.alumno.avatar, Validators.compose([
         Validators.maxLength(100),
         Validators.minLength(1),
         Validators.required
-        ])),
+      ])),
       gender: new FormControl(this.alumno.gender, Validators.compose([
         Validators.required
-        ]))
-      });
+      ])),
+      postalCode: new FormControl(this.alumno.postalCode, Validators.compose([
+        Validators.required,
+        Validators.pattern('^[1-9]{5}$'),
+      ]))
+    });
   }
 
-  onSubmit(values){
+  onSubmit(values) {
     this.modalCtrl.dismiss(JSON.stringify(values));  //los valores son correctos. Se devuelven.
-    }
+  }
 
   public closeModal() {
-      this.modalCtrl.dismiss();  //se cancela la edición. No se devuelven datos.
+    this.modalCtrl.dismiss();  //se cancela la edición. No se devuelven datos.
   }
 
 }

@@ -30,14 +30,25 @@ Si ha ido mal el acceso (por ejemplo si no hemos lanzado jsonServer) se coge el 
 
 
   ngOnInit(): void {
-    this.apiService.getAlumnos()
-      .then( (alumnos:Alumno[])=> {
-          this.alumnos=alumnos;
-          console.log(this.alumnos);
-      })
-      .catch( (error:string) => {
-          console.log(error);
+    this.apiService.getAlumnos().subscribe((resultadoConsultaAlumnos) => {
+
+      this.alumnos = new Array<Alumno>();
+
+      resultadoConsultaAlumnos.forEach((datosTarea: any) => {
+
+        let alumnoJsonObject=datosTarea.payload.doc.data();
+
+        alumnoJsonObject.id=datosTarea.payload.doc.id,
+
+        this.alumnos.push(
+
+          Alumno.createFromJsonObject(alumnoJsonObject)
+
+        );
+
       });
+
+    });
   }
 
 
@@ -52,10 +63,10 @@ Si el borrado ha ido mal muestro por consola el error que ha ocurrido.
 
   eliminarAlumno(indice:number){
     this.apiService.eliminarAlumno(this.alumnos[indice].id)
-    .then( (correcto:boolean ) => {
-      console.log("Borrado correcto del alumno con indice: "+indice);
-      this.alumnos.splice(indice,1);
-    })
+    //.then( (correcto:boolean ) => {
+      //console.log("Borrado correcto del alumno con indice: "+indice);
+      //this.alumnos.splice(indice,1);
+    //})
     .catch( (error:string) => {
         console.log("Error al borrar: "+error);
     });
@@ -74,9 +85,9 @@ Si el borrado ha ido mal muestro por consola el error que ha ocurrido.
         let alumnoJSON=JSON.parse(data['data']);
         let alumnoModificado:Alumno = Alumno.createFromJsonObject(alumnoJSON);
         this.apiService.modificarAlumno(alumnoModificado.id,alumnoModificado)  //se hace PUT a la API
-                .then( (alumno:Alumno)=> {
-                  this.alumnos[indice]=alumno;  //si se ha modificado en la api se actualiza en la lista
-                })
+                //.then( (alumno:Alumno)=> {
+                  //this.alumnos[indice]=alumno;  //si se ha modificado en la api se actualiza en la lista
+                //})
                 .catch( (error:string) => {
                     console.log(error);
                 });
@@ -111,11 +122,11 @@ Si el borrado ha ido mal muestro por consola el error que ha ocurrido.
   
         this.apiService.insertarAlumno(alumnoNuevo)  //se hace POST a la API
   
-                .then( (alumno:Alumno)=> {
+                //.then( (alumno:Alumno)=> {
   
-                  this.alumnos.push(alumno);  //si se ha insertado en la api se añade en la lista
+                  //this.alumnos.push(alumno);  //si se ha insertado en la api se añade en la lista
   
-                })
+                //})
   
                 .catch( (error:string) => {
   
