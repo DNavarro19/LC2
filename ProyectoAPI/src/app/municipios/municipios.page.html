@@ -1,0 +1,15 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="provincias"></ion-back-button>
+    </ion-buttons>
+    <ion-title>municipios</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-list *ngFor="let municipio of municipios; let indice=index;">
+    <ion-item detail="false" button (click)="verPronostico(indice)">
+      <ion-label class="ion-text-wrap">{{municipio.NOMBRE}}</ion-label>
+    </ion-item>
+  </ion-list>
+</ion-content>

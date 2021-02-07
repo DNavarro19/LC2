@@ -1,0 +1,13 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>provincias</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+<ion-list *ngFor="let provincia of provincias; let indice=index;">
+  <ion-item detail="false" button (click)="Municipio(indice)">
+    <ion-label class="ion-text-wrap">{{provincia.PRO}}</ion-label>
+  </ion-item>
+</ion-list>
+</ion-content>
