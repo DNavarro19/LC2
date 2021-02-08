@@ -61,17 +61,32 @@ Si el borrado ha ido mal muestro por consola el error que ha ocurrido.
 
 */
 
-  eliminarAlumno(indice:number){
-    this.apiService.eliminarAlumno(this.alumnos[indice].id)
-    //.then( (correcto:boolean ) => {
-      //console.log("Borrado correcto del alumno con indice: "+indice);
-      //this.alumnos.splice(indice,1);
-    //})
-    .catch( (error:string) => {
-        console.log("Error al borrar: "+error);
-    });
-  }//end_eliminar_alumno
+  eeliminarAlumno(indice:number){
 
+    var urlAvatar=this.alumnos[indice].avatar;
+
+    this.apiService.eliminarAlumno(this.alumnos[indice].id)
+
+    .then( () => {
+
+      //los datos del alumno se han eliminado correctamente de cloud firestore
+
+      //elimino la imagen de avatar del storage de firebase
+
+      this.apiService.removeImage(urlAvatar);
+
+      //this.alumnos.splice(indice,1);  No hace falta quitarlo del array. Se recarga todo el array de forma automática
+
+    })
+
+    .catch( (error:string) => {
+
+        this.presentToast("Error al borrar: "+error);
+
+    });
+
+  }//end_eliminar_alumno
+  
   async modificarAlumno(indice:number) {
     const modal = await this.modalController.create({
       component: EditarAlumnoPage,

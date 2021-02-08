@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
 import { Alumno } from '../modelo/Alumno';
+import { ApiServiceProvider } from 'src/app/providers/api-service'
 
 @Component({
   selector: 'app-editar-alumno',
@@ -16,7 +17,7 @@ export class EditarAlumnoPage implements OnInit {
   validations_form: FormGroup;
 
   constructor(public formBuilder: FormBuilder,
-    public modalCtrl: ModalController) { }
+    public modalCtrl: ModalController, public apiService: ApiServiceProvider) { }
 
   ngOnInit() {
     this.alumno = JSON.parse(this.alumnoJson);
@@ -50,11 +51,7 @@ export class EditarAlumnoPage implements OnInit {
         Validators.pattern('^[a-z A-Z]+$'),
         Validators.required
       ])),
-      avatar: new FormControl(this.alumno.avatar, Validators.compose([
-        Validators.maxLength(100),
-        Validators.minLength(1),
-        Validators.required
-      ])),
+      avatar: new FormControl(this.alumno.avatar, Validators.required),
       gender: new FormControl(this.alumno.gender, Validators.compose([
         Validators.required
       ])),
@@ -71,6 +68,38 @@ export class EditarAlumnoPage implements OnInit {
 
   public closeModal() {
     this.modalCtrl.dismiss();  //se cancela la edición. No se devuelven datos.
+  }
+
+  uploadImage(event: FileList){
+
+    var file:File=event.item(0);
+
+    var extension = file.name.substr(file.name.lastIndexOf('.') + 1);
+
+    //doy al nombre del fichero un número aleatorio 
+
+    //le pongo al nombre también la extensión del fichero
+
+    var fileName= `${new Date().getTime()}.${extension}`;
+
+    this.validations_form.controls.avatar.setValue("");
+
+    this.apiService.uploadImage(file,fileName)
+
+    .then( (downloadUrl)=>{
+
+      this.alumno.avatar=downloadUrl;
+
+      this.validations_form.controls.avatar.setValue(downloadUrl);
+
+    })
+
+    .catch((error)=>{
+
+      console.log(error);
+
+    });
+
   }
 
 }
