@@ -19,8 +19,7 @@ export class ApiServiceProvider {
 
     
 
-    constructor(private angularFirestore: AngularFirestore, public afStorage: AngularFireStorage){
-
+    constructor(private angularFirestore: AngularFirestore, private afStorage: AngularFireStorage){
     }
 
 

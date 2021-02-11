@@ -61,7 +61,7 @@ Si el borrado ha ido mal muestro por consola el error que ha ocurrido.
 
 */
 
-  eeliminarAlumno(indice:number){
+  eliminarAlumno(indice:number){
 
     var urlAvatar=this.alumnos[indice].avatar;
 
