@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { FirebaseAuthService } from 'src/app/providers/firebase-auth.service';
 import { User } from '../modelo/User';
+import { NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-login',
@@ -13,16 +14,16 @@ export class LoginPage implements OnInit {
   validations_form: FormGroup;
   user: User;
 
-  constructor(public formBuilder: FormBuilder, public fireAuth: FirebaseAuthService) { }
+  constructor(public formBuilder: FormBuilder, public fireAuth: FirebaseAuthService, private navCtrl: NavController) { }
 
   ngOnInit() {
 
     this.validations_form = this.formBuilder.group({
-      password: new FormControl(this.user.password, Validators.compose([
+      password: new FormControl("", Validators.compose([
         Validators.minLength(6),
         Validators.required
       ])),
-      email: new FormControl(this.user.email, Validators.compose([
+      email: new FormControl("", Validators.compose([
         Validators.pattern('^[a-zA-Z0-9_.+-]+[@]{1}[a-zA-Z0-9-]+[.]{1}[a-zA-Z]+$'),
         Validators.required
       ]))
@@ -34,6 +35,7 @@ export class LoginPage implements OnInit {
     
     .then( (data)=>{
 
+      this.navCtrl.navigateForward('home');
       console.log("Registro correcto");
       
       })
@@ -43,6 +45,8 @@ export class LoginPage implements OnInit {
         console.log("Error en el registro: "+error['message']);
       
       });
+
+      
   }
 
   register(values){
